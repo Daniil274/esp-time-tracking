@@ -1,3 +1,5 @@
+#include <DallasTemperature.h>
+
 #include <LiquidCrystal_I2C.h>
 
 #include <Time.h>
@@ -9,12 +11,19 @@
 DS1307RTC Clock;
 AT24C32 eep;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#define ONE_WIRE_BUS 2
+ 
+// создаём объект для работы с библиотекой OneWire
+OneWire oneWire(ONE_WIRE_BUS);
+ 
+// создадим объект для работы с библиотекой DallasTemperature
+DallasTemperature sensor(&oneWire);
+
+// Специальный объект для хранения адреса устройства
+
 bool work = false;
 
-const char *monthName[12] = {
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-};
 void getUARTtime(){
   if (Serial.available() > 0) {
      String tim = Serial.readString();
@@ -43,7 +52,7 @@ void printDate(){
 }
 void printStatus(){
   lcd.setCursor(0,0);
-  if(work==false) lcd.print("Stopped!");
+  if(!work) lcd.print("Stopped!");
   else{
     lcd.print("Running!");
   }
@@ -51,6 +60,7 @@ void printStatus(){
 void buttonListen(){
   if(digitalRead(11)){
     work=!work;
+    printStatus();
     delay(500);
   }
 }
@@ -60,8 +70,22 @@ String addZero(uint8_t number){
    return "0"+String(number);
   }
 }
+void printTemp(){
+    float temperature;
+  // отправляем запрос на измерение температуры
+  sensor.requestTemperatures();
+  // считываем данные из регистра датчика
+  temperature = sensor.getTempCByIndex(0);
+  // выводим температуру в Serial-порт
+  lcd.setCursor(0, 1);
+  lcd.print(temperature);
+  lcd.print((char)223);
+}
 void setup() {
   //Start serial
+   sensor.begin();
+  // устанавливаем разрешение датчика от 9 до 12 бит
+  sensor.setResolution(12);
   lcd.init();
   lcd.backlight();
   Serial.begin(9600);
@@ -76,4 +100,5 @@ void loop() {
   printDate();
   printStatus();
   buttonListen();
+  printTemp();
 }
