@@ -1,0 +1,63 @@
+body{
+    font-family: "Roboto Light";
+}
+header{
+    background: rgba(128, 128, 128, 0.5);
+}
+label{
+    font-size: 72px;
+}
+a{
+    text-decoration: none;
+    color: black;
+    font-family: "Roboto Light";
+}
+.justify-content-center{
+    display: flex;
+    justify-content: center;
+}
+.justify-content-start{
+    display: flex;
+    justify-content: start;
+}
+.justify-content-end{
+    display: flex;
+    justify-content: end;
+}
+.d-flex{
+    display: flex;
+}
+.text-center{
+    text-align: center;
+}
+.w-100{
+    width: 100%;
+}
+.border-round{
+    border: 3px rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    padding: 10px;
+}
+.shadow {
+    background: #fc0; /* Цвет фона */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 10px;
+}
+.bd-green{
+    background-color: rgba(95, 236, 60, 0.5);
+}
+.bd-red{
+    background-color: rgba(255, 0, 0, 0.5);
+}
+.bg-yellow{
+    background-color: rgba(255, 255, 0, 0.5);
+}
+.m-auto{
+    margin: auto;
+}
+.m-0{
+    margin: 0;
+}
+.m-1{
+    margin: 1rem;
+}
